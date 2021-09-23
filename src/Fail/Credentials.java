@@ -88,24 +88,25 @@ public class Credentials implements Serializable {
 		} catch (IOException e) {
 		}
 
-		try {
+	      try {
+	          String data = domainName;
+	          File f1 = new File(UserId+"creds.txt");
+	          if(!f1.exists()) {
+	             f1.createNewFile();
+	          }
 
-			String data = domainName;
-			File f1 = new File(UserId + "cred.txt");
-			if (!f1.exists()) {
-				f1.createNewFile();
-			}
+	          FileWriter fileWritter = new FileWriter(f1.getName(),true);
+	          BufferedWriter bw = new BufferedWriter(fileWritter);
+	          bw.write(data);
+	          bw.write(" ");
+	          bw.close();
+	          System.out.println("Done");
+	       } catch(IOException e){
+	          e.printStackTrace();
+	       }
+	    }
 
-			FileWriter fileWritter = new FileWriter(f1.getName(), true);
-			BufferedWriter bw = new BufferedWriter(fileWritter);
-			bw.write(data);
-			bw.write("\n");
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
+	
 
 	public static void fetchcred(String UserId) {
 		System.out.println("==========================================");
@@ -120,22 +121,23 @@ public class Credentials implements Serializable {
 	}
 
 	public static void creds(String UserId) {
-		try (BufferedReader br = new BufferedReader(new FileReader(UserId + "cred.txt"))) {
-
-			String line = br.readLine();
-			String[] creds = line.split("\\s");
-			for (int i = 0; i < creds.length; i++) {
-
-				System.out.println((i + 1) + "." + creds[i]);
+		try (BufferedReader br = new BufferedReader(new FileReader(UserId+"creds.txt"))) {
+			   String line= br.readLine() ;
+			   String[] cred=line.split("\\s");
+			   for (int i = 0; i < cred.length; i++) {
+				   System.out.println((i+1)+"."+cred[i]);
+				
 			}
-
+			   
+			   
+			
 			Scanner sc = new Scanner(System.in);
 
 			System.out.println("Enter the Domain ");
 			int dn = sc.nextInt();
 
 			try {
-				FileInputStream file = new FileInputStream(UserId + "." + creds[dn - 1] + ".txt");
+				FileInputStream file = new FileInputStream(UserId + "." +cred[dn-1]  + ".txt");
 				ObjectInputStream out = new ObjectInputStream(file);
 				Credentials c = (Credentials) out.readObject();
 				out.close();
@@ -150,24 +152,22 @@ public class Credentials implements Serializable {
 				System.out.println("No data available");
 			} catch (ClassNotFoundException e) {
 				System.out.println("No data available");
+			}}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
-		} catch (IOException e) {
-			System.out.println("No Data Is Stored");
-			Scanner s = new Scanner(System.in);
-			System.out.println("Do you Want Store Credentials 1-YES 2-NO");
-
-			int x = s.nextInt();
-			if (x == 1) {
-				getcred(UserId);
-			}
-		}
-
+		
+			
+			
+		
+	
 	}
 
 	public static void deleteCreds(String UserId) {
 		try {
-		try (BufferedReader br = new BufferedReader(new FileReader(UserId + "cred.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(UserId+"creds.txt"))) {
 			String line = br.readLine();
 			String[] creds = line.split("\\s");
 			for (int i = 0; i < creds.length; i++) {
@@ -186,7 +186,6 @@ public class Credentials implements Serializable {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		}

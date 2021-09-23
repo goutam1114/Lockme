@@ -1,13 +1,18 @@
 package Fail;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -88,6 +93,49 @@ public class operation {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter your UserId");
 		String UserId = sc.next();
+		File f = new File("Users.txt");
+		try {
+			f.createNewFile();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		try (BufferedReader br = new BufferedReader(new FileReader("Users.txt"))) {
+			String line = br.readLine();
+			String[] creds = line.split("\\s");
+			int x=Arrays.binarySearch(creds,UserId);
+			if(x!=-1) {
+				System.out.println("UserId Exists Try with other UserId");
+				register();
+			}
+			/*for (int i = 0; i < creds.length; i++) {
+
+				if (UserId.contentEquals(creds[i])) {
+					System.out.println("UserId Exists Try with other UserId");
+					register();
+				}
+			}*/
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			String data = UserId;
+			File f1 = new File("Users.txt");
+			if (!f1.exists()) {
+				f1.createNewFile();
+			}
+
+			FileWriter fileWritter = new FileWriter(f1.getName(), true);
+			BufferedWriter bw = new BufferedWriter(fileWritter);
+			bw.write(data);
+			bw.write(" ");
+			bw.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		System.out.println("Enter Password");
 		String pwd = sc.next();
