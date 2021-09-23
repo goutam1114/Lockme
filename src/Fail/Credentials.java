@@ -76,7 +76,18 @@ public class Credentials implements Serializable {
 		System.out.println("Enter Password of the " + domainName);
 		String password = s.next();
 		Credentials c = new Credentials(domainName, UserName, password);
-		FileWriter f;
+		try {
+			FileOutputStream file = new FileOutputStream(UserId + "." + domainName + ".txt");
+			ObjectOutputStream out = new ObjectOutputStream(file);
+			out.writeObject(c);
+			out.close();
+			file.close();
+
+		} catch (FileNotFoundException e) {
+			System.out.println("No Data Found");
+		} catch (IOException e) {
+		}
+
 		try {
 
 			String data =domainName ;
