@@ -59,8 +59,7 @@ public class operation {
 					break;
 
 				}
-				System.out.println("To Coninue Press 1 ,To Exit Press 1");
-				c = sc.nextInt();
+
 			}
 		} catch (Exception e) {
 			System.out.println("ENTER VALID CHOICE");

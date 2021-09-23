@@ -90,7 +90,7 @@ public class Credentials implements Serializable {
 
 		try {
 
-			String data =domainName ;
+			String data = domainName;
 			File f1 = new File(UserId + "cred.txt");
 			if (!f1.exists()) {
 				f1.createNewFile();
@@ -111,9 +111,9 @@ public class Credentials implements Serializable {
 		System.out.println("==========================================");
 		System.out.println("*					*");
 		System.out.println("*   WELCOME TO DIGITAL LOCKER 	 *");
-		System.out.println("*   YOUR CREDS ARE 	 *");
 		System.out.println("*					*");
 		System.out.println("==========================================");
+		System.out.println("*   YOUR CREDS ARE 	 *");
 
 		creds(UserId);
 
@@ -121,17 +121,21 @@ public class Credentials implements Serializable {
 
 	public static void creds(String UserId) {
 		try (BufferedReader br = new BufferedReader(new FileReader(UserId + "cred.txt"))) {
-			String line;
-			while ((line = br.readLine()) != null) {
-				System.out.println(line);
+
+			String line = br.readLine();
+			String[] creds = line.split("\\s");
+			for (int i = 0; i < creds.length; i++) {
+
+				System.out.println((i + 1) + "." + creds[i]);
 			}
+
 			Scanner sc = new Scanner(System.in);
 
-			System.out.println("Enter the Domain Name");
-			String domainName = sc.next();
+			System.out.println("Enter the Domain ");
+			int dn = sc.nextInt();
 
 			try {
-				FileInputStream file = new FileInputStream(UserId + "." + domainName + ".txt");
+				FileInputStream file = new FileInputStream(UserId + "." + creds[dn - 1] + ".txt");
 				ObjectInputStream out = new ObjectInputStream(file);
 				Credentials c = (Credentials) out.readObject();
 				out.close();
@@ -162,28 +166,36 @@ public class Credentials implements Serializable {
 	}
 
 	public static void deleteCreds(String UserId) {
+		try {
 		try (BufferedReader br = new BufferedReader(new FileReader(UserId + "cred.txt"))) {
-			String line;
-			while ((line = br.readLine()) != null) {
-				System.out.println(line);
+			String line = br.readLine();
+			String[] creds = line.split("\\s");
+			for (int i = 0; i < creds.length; i++) {
+
+				System.out.println((i + 1) + "." + creds[i]);
 			}
 			System.out.println("Enter the domain you want to delete");
 			Scanner sc = new Scanner(System.in);
-			String Domain = sc.next();
-			File f = new File(UserId + "." + Domain + ".txt");
+			int dn = sc.nextInt();
+			File f = new File(UserId + "." + creds[dn-1] + ".txt");
 			boolean x = f.delete();
 			if (x) {
-				System.out.println("deleted " + Domain);
+				System.out.println("deleted " + creds[dn-1]);
 			} else {
-				System.out.println("Can't delete " + Domain);
+				System.out.println("Can't delete " + creds[dn-1]);
 			}
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		}
+		catch(Exception e) {
+			System.out.println("Enter valid choice");
+			deleteCreds(UserId);
+			
+		}
 
-	
 	}
 
 }

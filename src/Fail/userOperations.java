@@ -25,20 +25,24 @@ public class userOperations {
 				break;
 			case 2:
 				Credentials.fetchcred(UserId);
-
 				break;
 			case 3:
 				Credentials.deleteCreds(UserId);
 				break;
 
 			}
-			System.out.println("Do you want to continue 1-YES 0-NO");
+			System.out.println("Do you want to continue 1-YES 2-NO");
 			c=S.nextInt();
+			if(c==2) {
+				System.exit(0);
+			}
+			
 		}
 		}
 		catch(Exception e) {
-			System.out.println("ENTER VALID CHOICE");
-			Operations(UserId);
+			System.out.println("ENTER VALID CHOICE " );
+			//Operations(UserId);
+			//e.printStackTrace();
 			
 			
 		}
