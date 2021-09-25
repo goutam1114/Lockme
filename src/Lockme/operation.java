@@ -1,4 +1,4 @@
-package Fail;
+package Lockme;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -35,16 +35,21 @@ public class operation {
 
 	public static void base() {
 		int c = 1;
+
+		Scanner sc = new Scanner(System.in);
+
+		int choice = welcome();
 		try {
-
-			Scanner sc = new Scanner(System.in);
-
-			int choice = welcome();
 
 			while (c == 1) {
 				switch (choice) {
 				case 1:
-					register();
+					try {
+						register();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					System.out.println("Do you Want to Login 1-YES 2-NO");
 					int g = sc.nextInt();
 					if (g == 1) {
@@ -67,7 +72,7 @@ public class operation {
 
 			}
 		} catch (Exception e) {
-			System.out.println("ENTER VALID CHOICE");
+			System.out.println("Enter Valid Option");
 			base();
 
 		}
@@ -75,16 +80,25 @@ public class operation {
 	}
 
 	public static int welcome() {
+		try {
 		System.out.println("1.Registration\n2.Login");
 		System.out.println("Enter your Choice");
 
 		Scanner sc = new Scanner(System.in);
 		int choice = sc.nextInt();
 		return choice;
+}
+		catch(Exception e) {
+			System.out.println("Enter Valid Choice");
+			return welcome();
+			
+			
+		}
+		
 
 	}
 
-	public static void register() {
+	public static void register() throws IOException {
 		System.out.println("==========================================");
 		System.out.println("*					*");
 		System.out.println("*   WELCOME TO REGISTRATION PAGE	*");
@@ -93,50 +107,58 @@ public class operation {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter your UserId");
 		String UserId = sc.next();
-		File f = new File("Users.txt");
 		try {
-			f.createNewFile();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+	          String data = "asertgdd";
+	          File f1 = new File("Users.txt");
+	          if(!f1.exists()) {
+	             f1.createNewFile();
+	          }
 
+	          FileWriter fileWritter = new FileWriter(f1.getName(),true);
+	          BufferedWriter bw = new BufferedWriter(fileWritter);
+	          bw.write(data);
+	          bw.write(" ");
+	          bw.close();
+	       } catch(IOException e){
+	          e.printStackTrace();
+	       }
 		try (BufferedReader br = new BufferedReader(new FileReader("Users.txt"))) {
-			String line = br.readLine();
-			String[] creds = line.split("\\s");
-			int x=Arrays.binarySearch(creds,UserId);
-			if(x!=-1) {
-				System.out.println("UserId Exists Try with other UserId");
-				register();
-			}
-			/*for (int i = 0; i < creds.length; i++) {
-
-				if (UserId.contentEquals(creds[i])) {
+			   String line= br.readLine() ;
+			   String[] cred=line.split("\\s");
+			   Arrays.sort(cred);
+			   int x=Arrays.binarySearch(cred,UserId);
+			 /*  System.out.println(x);
+			   for(int i=0;i<cred.length;i++) {
+				   System.out.println(cred[i]);
+			   }*/
+				if(x>=0) {
+					
 					System.out.println("UserId Exists Try with other UserId");
 					register();
 				}
-			}*/
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			
+			   
+			   br.close();
+	
 
 		try {
-			String data = UserId;
-			File f1 = new File("Users.txt");
-			if (!f1.exists()) {
-				f1.createNewFile();
-			}
+	          String data = UserId;
+	          File f1 = new File("Users.txt");
+	          if(!f1.exists()) {
+	             f1.createNewFile();
+	          }
 
-			FileWriter fileWritter = new FileWriter(f1.getName(), true);
-			BufferedWriter bw = new BufferedWriter(fileWritter);
-			bw.write(data);
-			bw.write(" ");
-			bw.close();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	          FileWriter fileWritter = new FileWriter(f1.getName(),true);
+	          BufferedWriter bw = new BufferedWriter(fileWritter);
+	          bw.write(data);
+	          bw.write(" ");
+	          bw.close();
+	       } catch(IOException e){
+	          e.printStackTrace();
+	       }
+		
 
+	
 		System.out.println("Enter Password");
 		String pwd = sc.next();
 		System.out.println("Enter email");
@@ -157,7 +179,7 @@ public class operation {
 			e.printStackTrace();
 		}
 	}
-
+	}
 	public static void login() {
 		System.out.println("==========================================");
 		System.out.println("*					*");

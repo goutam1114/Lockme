@@ -1,4 +1,4 @@
-package Fail;
+package Lockme;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -129,7 +130,7 @@ public class Credentials implements Serializable {
 				
 			}
 			   
-			   
+			   br.close();
 			
 			Scanner sc = new Scanner(System.in);
 
@@ -153,6 +154,10 @@ public class Credentials implements Serializable {
 			} catch (ClassNotFoundException e) {
 				System.out.println("No data available");
 			}}
+		catch(NullPointerException e) {
+			System.out.println("Nothing To Show");
+			
+		}
 			catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -174,6 +179,7 @@ public class Credentials implements Serializable {
 
 				System.out.println((i + 1) + "." + creds[i]);
 			}
+			br.close();
 			System.out.println("Enter the domain you want to delete");
 			Scanner sc = new Scanner(System.in);
 			int dn = sc.nextInt();
@@ -181,17 +187,57 @@ public class Credentials implements Serializable {
 			boolean x = f.delete();
 			if (x) {
 				System.out.println("deleted " + creds[dn-1]);
+				String str=line.replace(creds[dn-1], "");
+				File f2 = new File(UserId+"creds.txt");
+				boolean y= f2.delete();
+				
+				
+				
+				
+				 try {
+			          File f1 = new File(UserId+"creds.txt");
+			          if(!f1.exists()) {
+			             f1.createNewFile();
+				         			             
+			          }
+			          FileWriter fileWritter = new FileWriter(f1.getName(),true);
+			          BufferedWriter bw = new BufferedWriter(fileWritter);
+			          for (int i = 0; i < creds.length; i++) {
+			        	  if(i==dn-1) {
+			        		  continue;
+			        	  }
+			        	  bw.write(creds[i]);
+			        	  bw.write(" ");
+
+						}
+
+			          bw.close();
+			          fileWritter.close();
+			          System.out.println("Done");
+
+
+
+			          
+			       } catch(IOException e){
+			          e.printStackTrace();
+			       }
+
+				
+				
 			} else {
 				System.out.println("Can't delete " + creds[dn-1]);
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			deleteCreds(UserId);
 		}
 		}
 		catch(Exception e) {
-			System.out.println("Enter valid choice");
-			deleteCreds(UserId);
+			
+			
+			System.out.println("Nothing Stored");
+			
+
 			
 		}
 

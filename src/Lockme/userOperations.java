@@ -1,4 +1,4 @@
-package Fail;
+package Lockme;
 
 import java.util.Scanner;
 
